@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivette Vivanco Cordova — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-raised:#FFFFFF;
+    --ink:#152238;
+    --teal:#1E90FF;
+    --teal-deep:#0B5ED7;
+    --ochre:#4FA3FF;
+    --line:#D9E8FB;
+    --grey:#5C6B7A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora', serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit;}
+  h1,h2,h3{font-family:'Playfair Display', serif;}
+
+  .ledger-bg{
+    background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 100% 42px;
+    background-position: 0 0;
+  }
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,243,237,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; justify-content:space-between; align-items:center; height:64px;}
+  .brand{font-family:'Playfair Display', serif; font-weight:600; font-size:18px; letter-spacing:0.02em;}
+  .brand em{font-style:normal; color:var(--teal);}
+  nav ul{list-style:none; display:flex; gap:28px;}
+  nav a{
+    font-size:13px; text-decoration:none; color:var(--ink);
+    text-transform:uppercase; letter-spacing:0.08em; font-weight:500;
+    border-bottom:2px solid transparent; padding-bottom:4px;
+    transition:border-color .2s ease;
+  }
+  nav a:hover, nav a:focus-visible{border-color:var(--ochre);}
+  .nav-toggle{display:none; background:none; border:none; font-size:24px; cursor:pointer; color:var(--ink);}
+
+  header.hero{
+    padding:80px 0 90px; position:relative; overflow:hidden;
+    background:var(--teal-deep); color:var(--paper);
+  }
+  header.hero .corner-meta{
+    display:flex; justify-content:flex-end; font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:#9CC3EE;
+    margin-bottom:56px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:#BFDCFF; margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--ochre); display:inline-block;}
+  h1.name{ font-size:clamp(38px, 6vw, 66px); font-weight:600; line-height:1.04; letter-spacing:-0.01em; max-width:14ch; color:var(--paper);}
+  h1.name .accent{color:var(--ochre); font-style:italic; font-weight:500;}
+  .hero-flex{display:flex; align-items:center; gap:40px; justify-content:space-between;}
+  .hero-text{flex:1; min-width:280px;}
+  .avatar-mark{flex-shrink:0; width:160px; height:160px;}
+  .role-line{ margin-top:20px; font-size:clamp(16px,2.4vw,20px); color:#CFE4FF; max-width:46ch; font-weight:400; }
+  .role-line strong{color:var(--paper); font-weight:600;}
+  .hero-contact{
+    margin-top:34px; display:flex; flex-wrap:wrap; gap:18px 26px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:#A9CDF5;
+  }
+  .hero-contact a{text-decoration:none; border-bottom:1px solid #3D7FC9;}
+  .hero-contact a:hover{border-color:var(--ochre); color:var(--ochre);}
+
+  section{padding:64px 0;}
+  section + section{border-top:1px solid var(--line);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:34px;}
+  .sec-num{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ochre);}
+  h2.sec-title{font-size:clamp(24px,3.4vw,32px); font-weight:600;}
+  .sec-intro{max-width:62ch; color:var(--grey); font-size:16px; margin-bottom:8px;}
+
+  .summary-text{font-size:19px; max-width:66ch; color:var(--ink);}
+  .summary-text strong{color:var(--teal-deep);}
+
+  .ledger{ border:1px solid var(--line); background:var(--paper-raised); border-radius:2px; }
+  .ledger-row{
+    display:flex; align-items:baseline; justify-content:space-between; padding:22px 26px; gap:16px;
+    border-bottom:1px solid var(--line); opacity:0; transform:translateY(10px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .ledger-row.in{opacity:1; transform:translateY(0);}
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-label{ font-size:15px; color:var(--ink); max-width:60%; }
+  .ledger-label .sub{display:block; font-size:12.5px; color:var(--grey); margin-top:3px;}
+  .ledger-value{ font-family:'IBM Plex Mono', monospace; font-size:clamp(20px,3vw,28px); font-weight:500; color:var(--teal-deep); white-space:nowrap; }
+  .ledger-value .unit{font-size:14px; color:var(--ochre); margin-left:4px;}
+  .ledger-row-clickable{
+    cursor:pointer; border:none; width:100%; font-family:inherit; text-align:left;
+    background:var(--paper-raised); transition:background .15s ease;
+  }
+  .ledger-row-clickable:hover, .ledger-row-clickable:focus-visible{background:#F3F8FF;}
+
+  /* WHAT I DO — tag cloud */
+  .whatido{padding:64px 0; border-top:1px solid var(--line);}
+  .whatido h2{font-size:clamp(30px,4.5vw,44px); font-weight:600; line-height:1.1; max-width:14ch; margin-bottom:18px;}
+  .whatido .lede{font-size:16px; color:var(--grey); max-width:52ch; margin-bottom:38px;}
+  .tagcloud{display:flex; flex-wrap:wrap; gap:16px 22px; align-items:center;}
+  .tagcloud span{
+    font-family:'Playfair Display', serif; font-weight:500; font-size:clamp(15px,2.2vw,19px);
+    color:var(--teal-deep); border-bottom:2px solid var(--line); padding-bottom:3px;
+  }
+  .tagcloud span:nth-child(3n+1){color:var(--ink);}
+  .tagcloud span:nth-child(4n+2){border-bottom-color:var(--ochre); transform:translateY(6px); display:inline-block;}
+  .tagcloud span:nth-child(5n+3){transform:translateY(-4px); display:inline-block;}
+
+  .funnel{margin-top:6px;}
+  .funnel-row{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding:12px 0; border-bottom:1px dashed var(--line); font-size:14.5px;
+  }
+  .funnel-row:last-child{border-bottom:none;}
+  .funnel-row.total{font-weight:600; color:var(--teal-deep);}
+  .funnel-row .flabel{color:var(--ink);}
+  .funnel-row .flabel .fsub{display:block; font-size:12.5px; color:var(--grey); margin-top:2px;}
+  .funnel-row .fval{
+    font-family:'IBM Plex Mono', monospace; font-size:16px; color:var(--teal-deep); white-space:nowrap;
+  }
+  .funnel-row.subtract .fval{color:#B04A3A;}
+  .funnel-section-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ochre); margin:18px 0 4px;
+  }
+  .funnel-section-label:first-child{margin-top:0;}
+
+  .role-block{margin-bottom:28px;}
+  .role-block:last-child{margin-bottom:0;}
+  .role-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; margin-bottom:14px;}
+  .role-org{font-family:'Playfair Display', serif; font-weight:600; font-size:21px;}
+  .role-title{color:var(--teal-deep); font-weight:500; font-size:15px;}
+  .role-dates{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--grey); margin-left:auto;}
+  ul.duties{list-style:none;}
+  ul.duties li{ position:relative; padding-left:22px; margin-bottom:12px; font-size:15.5px; color:var(--ink); }
+  ul.duties li::before{ content:"—"; position:absolute; left:0; color:var(--ochre); font-weight:600; }
+
+  .cases{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+  .case{
+    background:var(--paper-raised); padding:28px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:flex-start; gap:20px;
+    transition:background .15s ease;
+    border:none; text-align:left; width:100%; font-family:inherit;
+  }
+  .case:hover, .case:focus-visible{background:#F3F8FF;}
+  .case-title-wrap{flex:1;}
+  .case-title{font-family:'Playfair Display', serif; font-weight:600; font-size:19px; color:var(--teal-deep); margin-bottom:10px;}
+  .case-teaser{font-size:15px; color:var(--grey);}
+  .case-arrow{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ochre);
+    white-space:nowrap; margin-top:4px; flex-shrink:0;
+  }
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(28,43,57,0.55); z-index:100;
+    display:none; align-items:center; justify-content:center; padding:24px;
+    backdrop-filter:blur(2px);
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--paper-raised); max-width:620px; width:100%; max-height:82vh; overflow-y:auto;
+    border-radius:3px; padding:40px; position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  }
+  .modal-close{
+    position:absolute; top:18px; right:18px; background:none; border:none; font-size:22px;
+    color:var(--grey); cursor:pointer; line-height:1; padding:6px;
+  }
+  .modal-close:hover{color:var(--ochre);}
+  .modal-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ochre); margin-bottom:10px;
+  }
+  .modal h3{font-size:24px; font-weight:600; color:var(--teal-deep); margin-bottom:18px; max-width:22ch;}
+  .modal-body p{font-size:15.5px; color:var(--ink); margin-bottom:14px;}
+  .modal-body p:last-child{margin-bottom:0;}
+  .modal-stat{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--teal-deep);
+    background:var(--paper); border:1px solid var(--line); padding:6px 12px; border-radius:20px; margin:4px 6px 4px 0;
+  }
+
+  .chips{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    border:1px solid var(--line); padding:7px 14px; border-radius:20px;
+    color:var(--grey); background:var(--paper-raised);
+  }
+
+  .teach-note{
+    border-left:3px solid var(--ochre); padding:14px 20px; margin-bottom:26px;
+    font-style:italic; color:var(--grey); font-size:15.5px; background:var(--paper-raised);
+  }
+
+  .skills-line{font-size:15.5px; color:var(--ink); max-width:70ch;}
+  .edu-line{font-size:15.5px; color:var(--ink); margin-bottom:8px;}
+  .edu-line .school{color:var(--grey); font-size:14px;}
+
+  footer{ padding:72px 0 56px; text-align:center; background:var(--teal-deep); color:var(--paper); }
+  footer h2{font-size:clamp(26px,4vw,36px); font-weight:600; margin-bottom:16px;}
+  footer p{color:#CFE4FF; max-width:50ch; margin:0 auto 28px; font-size:15.5px;}
+  .cta-btn{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:13px;
+    letter-spacing:0.06em; text-transform:uppercase; text-decoration:none;
+    background:var(--ochre); color:var(--ink); padding:14px 30px; border-radius:2px; font-weight:600;
+    transition:transform .2s ease, background .2s ease; border:none; cursor:pointer;
+  }
+  .cta-btn:hover{transform:translateY(-2px); background:#3D8BFF;}
+  .foot-meta{margin-top:36px; font-size:12.5px; color:#9CC3EE; font-family:'IBM Plex Mono', monospace;}
+
+  @media (max-width:720px){
+    nav ul{
+      position:fixed; top:64px; left:0; right:0; background:var(--paper);
+      flex-direction:column; padding:20px 28px; gap:18px;
+      border-bottom:1px solid var(--line);
+      transform:translateY(-130%); transition:transform .25s ease; z-index:40;
+    }
+    nav ul.open{transform:translateY(0);}
+    .nav-toggle{display:block;}
+    .role-dates{margin-left:0;}
+    .ledger-row{flex-direction:column; align-items:flex-start; gap:6px;}
+    .case{flex-direction:column;}
+    .modal{padding:28px; max-height:88vh;}
+    .hero-flex{flex-direction:column; align-items:flex-start;}
+    .avatar-mark{width:100px; height:100px;}
+    .corner-meta{font-size:10px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Ivette <em>Vivanco</em></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#cases">Case Studies</a></li>
+      <li><a href="#teaching">Training</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero ledger-bg">
+  <div class="wrap">
+    <div class="corner-meta">
+      <span>Los Angeles, CA · 2026</span>
+    </div>
+    <div class="hero-flex">
+      <div class="hero-text">
+        <div class="eyebrow">Loan Officer &amp; Business Consultant</div>
+        <h1 class="name">Hello, I'm <span class="accent">Ivette.</span></h1>
+        <p class="role-line">Bilingual lending &amp; small-business consulting professional with a passion for connecting entrepreneurs to the <strong>capital and grants</strong> that get their businesses off the ground.</p>
+        <div class="hero-contact">
+          <span>Los Angeles, CA</span>
+          <a href="mailto:vivancoiv@gmail.com">vivancoiv@gmail.com</a>
+          <span>310-869-3182</span>
+          <a href="https://www.linkedin.com/in/ivette-vivanco-5769bb32" target="_blank" rel="noopener">linkedin.com/in/ivette-vivanco-5769bb32</a>
+        </div>
+      </div>
+      <svg class="avatar-mark" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="80" cy="80" r="78" fill="#0B5ED7"/>
+        <path d="M50 40 Q40 90 60 130 Q90 150 115 115 Q130 80 105 45 Q80 20 50 40Z" fill="#4FA3FF" opacity="0.85"/>
+        <circle cx="72" cy="70" r="6" fill="#F6F3ED"/>
+        <path d="M60 100 Q80 118 104 98" stroke="#F6F3ED" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="whatido">
+  <div class="wrap">
+    <h2>What I do (and love doing)</h2>
+    <p class="lede">Every one of these shows up somewhere in the case studies below — this is the day-to-day toolkit behind them.</p>
+    <div class="tagcloud">
+      <span>Loan Packaging</span>
+      <span>Grant Program Design</span>
+      <span>Credit Analysis</span>
+      <span>Financial Coaching</span>
+      <span>Bilingual Client Advising</span>
+      <span>CDFI Relationship Management</span>
+      <span>Workshop Facilitation</span>
+      <span>Schedule C Review</span>
+      <span>VITA Tax Preparation</span>
+      <span>Business Certification Guidance</span>
+    </div>
+  </div>
+</section>
+
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Professional Summary</h2></div>
+    <p class="summary-text">Bilingual (English/Spanish) <strong>Business Consultant and Loan Officer</strong> with a passion for connecting with small business owners and helping them uncover the capital and grant opportunities available to them. Focused on getting entrepreneurs loan- and grant-ready through hands-on guidance in financial readiness, credit analysis, and the lending process from first conversation to funded deal.</p>
+  </div>
+</section>
+
+<section id="impact">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Impact Ledger</h2></div>
+    <p class="sec-intro">A running account, kept the way a loan file is kept.</p>
+    <div class="ledger" id="ledger">
+      <button class="ledger-row ledger-row-clickable" id="cd1LedgerRow" type="button">
+        <div class="ledger-label">Small Business Grant Program — applications screened to funded<span class="sub">388 applications received → 221 eligible → 37+ funded. Click for the full breakdown</span></div>
+        <div class="ledger-value">37<span class="unit">+ funded</span></div>
+      </button>
+      <div class="ledger-row">
+        <div class="ledger-label">Business prospects organized into an active lending pipeline<span class="sub">Prioritized workbook, sprint call list &amp; funnel calculator</span></div>
+        <div class="ledger-value">550<span class="unit">+ leads</span></div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-label">Lending goal supported by outreach campaign design<span class="sub">Access-to-capital strategy built from the ground up</span></div>
+        <div class="ledger-value">$875K<span class="unit">target</span></div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-label">Clients guided annually on financial wellness &amp; tax readiness<span class="sub">Debt reduction, budgeting, credit building, VITA tax prep</span></div>
+        <div class="ledger-value">100<span class="unit">+ clients/yr</span></div>
+      </div>
+      <button class="ledger-row ledger-row-clickable" id="fundingLedgerRow" type="button">
+        <div class="ledger-label">Total capital packaged for clients since Nov 2024<span class="sub">7 loans + 44 grants · $1.23M funded of $1.31M packaged. Click for the full breakdown</span></div>
+        <div class="ledger-value">$1.31M<span class="unit">packaged</span></div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Professional Experience</h2></div>
+
+    <div class="role-block">
+      <div class="role-top">
+        <span class="role-org">NEW East LA BusinessSource Center</span>
+        <span class="role-title">Business Consultant / Loan Officer</span>
+        <span class="role-dates">Nov 2024 – Present</span>
+      </div>
+      <ul class="duties">
+        <li>Provide one-on-one technical assistance to entrepreneurs on loan readiness, business planning, registration, Schedule C overviews, cash flow management, and financial analysis.</li>
+        <li>Evaluate and administer small business grant programs — including a citywide Small Business Grant Program and Change Reaction — coordinating with fiscal and loan-servicing partners to secure funding for small business clients.</li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <div class="role-top">
+        <span class="role-org">NEW FamilySource Center</span>
+        <span class="role-title">Financial Coach</span>
+        <span class="role-dates">Mar 2021 – Nov 2024</span>
+      </div>
+      <ul class="duties">
+        <li>Guided 100+ clients annually on financial wellness strategies, including debt reduction, budgeting, tax preparation, credit improvement, and SMART goal planning.</li>
+        <li>Coordinated the VITA (Volunteer Income Tax Assistance) program and served as an Advanced VITA-certified tax preparer, providing free tax preparation services to community members.</li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <div class="role-top">
+        <span class="role-org">PepsiCo</span>
+        <span class="role-title">Sales Account Manager</span>
+        <span class="role-dates">Dec 2021 – Nov 2022</span>
+      </div>
+      <ul class="duties">
+        <li>Managed a portfolio of 25 retail accounts generating $120K+ in weekly sales revenue.</li>
+        <li>Expanded product distribution and merchandising opportunities for new product launches.</li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <div class="role-top">
+        <span class="role-org">Friends of the Family</span>
+        <span class="role-title">Economic Development Program Administrator</span>
+        <span class="role-dates">Dec 2018 – Feb 2021</span>
+      </div>
+      <ul class="duties">
+        <li>Coordinated the Family Prosperity Initiative, supporting 34 low-income families with an 80% program success rate.</li>
+        <li>Assisted street vendors with permitting under LA County's Sidewalk Vending Campaign pilot.</li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <div class="role-top">
+        <span class="role-org">Moderne Communications</span>
+        <span class="role-title">West Coast Marketing Manager</span>
+        <span class="role-dates">Jun 2014 – Nov 2018</span>
+      </div>
+      <ul class="duties">
+        <li>Managed 50+ non-traditional marketing campaigns and experiential events across the West Coast.</li>
+        <li>Oversaw brand partnerships, vendor coordination, and promotional staff.</li>
+        <li>Served as contracted account and program manager, maintaining client accounts and programs — including SunButter's in-store sampling program and Walt Disney's faith-based jobs program — building relationships that developed into long-term partnerships.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Featured Case Studies</h2></div>
+    <p class="sec-intro">Click any case study to read the full story.</p>
+    <div class="cases" id="caseList"></div>
+  </div>
+</section>
+
+<section id="network">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Lender &amp; Partner Network</h2></div>
+    <div class="chips">
+      <span class="chip">Accessity</span>
+      <span class="chip">Inclusive Action for the City</span>
+      <span class="chip">TMC Community Capital</span>
+      <span class="chip">Mission Valley Bank</span>
+      <span class="chip">AmPac Business Capital</span>
+      <span class="chip">RizeCU</span>
+      <span class="chip">Accion Opportunity Fund</span>
+      <span class="chip">Jewish Free Loan Association</span>
+      <span class="chip">Black Cooperative Impact Fund</span>
+      <span class="chip">KIVA</span>
+      <span class="chip">CSC Lending</span>
+      <span class="chip">Golden State CDC</span>
+      <span class="chip">BMO</span>
+      <span class="chip">Lendistry</span>
+      <span class="chip">CDC Small Business Finance</span>
+    </div>
+  </div>
+</section>
+
+<section id="teaching">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Training &amp; Public Speaking</h2></div>
+    <div class="teach-note">Formal classroom teaching is a natural next step building on a role that has consistently included designing and delivering financial and business education content to adult learners — directly transferable to a community college business curriculum such as LACCT's.</div>
+    <ul class="duties">
+      <li>Designed and facilitated financial coaching workshops and VITA tax-preparation services for individual clients and entrepreneurs.</li>
+      <li>Delivered presentations to entrepreneurs across multiple professional roles on business fundamentals and access to capital.</li>
+      <li>Built and taught workshop curricula on business licensing and certification (Cal eProcure, SAM.gov, RAMP-LA, CPUC Supplier Clearinghouse).</li>
+      <li>Developed a companion presentation and speaking script on CDTFA sales tax reporting for small business owners.</li>
+      <li>Rebuilt and rebranded instructional materials (SBE/DVBE certification walkthrough) to align with organizational style and improve learner comprehension.</li>
+      <li>Briefed senior government stakeholders, including a round table presentation prepared for the Mayor of Los Angeles.</li>
+      <li>Edited and produced the People's Guide, a county-wide guidebook of public social services — managing content development, layout, and production from start to finish, and assisting with Spanish translation and content editing.</li>
+      <li>Conducted a SWOT analysis and strategic marketing plan for Sears Holding Corporation as part of a graduate marketing course, recommending strategies to address identified business challenges.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Technical Proficiencies</h2></div>
+    <p class="skills-line">Salesforce · Google Workspace (Docs, Sheets, Drive, Calendar) · Microsoft Excel &amp; financial modeling · Loan underwriting &amp; packaging software · Website Design &amp; Content Management · Bilingual business communication (English/Spanish)</p>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="sec-title">Education</h2></div>
+    <div class="edu-line"><strong>Master of Business Administration</strong> — <span class="school">Woodbury University, December 2019</span></div>
+    <div class="edu-line"><strong>Bachelor of Social Work</strong> — <span class="school">California State University, Los Angeles, August 2006</span></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Let's talk.</h2>
+    <p>Open to loan officer, business consulting, and community college business-instructor opportunities across Los Angeles.</p>
+    <a class="cta-btn" href="mailto:vivancoiv@gmail.com">Email Ivette</a>
+    <div class="foot-meta">Los Angeles, CA &nbsp;·&nbsp; vivancoiv@gmail.com &nbsp;·&nbsp; 310-869-3182 &nbsp;·&nbsp; linkedin.com/in/ivette-vivanco-5769bb32</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" id="modalBox">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="modal-eyebrow" id="modalEyebrow"></div>
+    <h3 id="modalTitle"></h3>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const menu = document.getElementById('navMenu');
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  const rows = document.querySelectorAll('.ledger-row');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('in'), i * 60);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  rows.forEach(r => io.observe(r));
+
+  const CASES = [
+    {
+      eyebrow: "Program Design & Administration",
+      title: "Citywide Small Business Grant Program",
+      teaser: "Designed and ran a citywide small business grant program from proposal to final distribution — 37+ businesses funded.",
+      body: [
+        "Led the design and rollout of a citywide small business grant program from the ground up, building the applicant tracking spreadsheet, verification documentation, and check-distribution workflow used to manage the entire funded cohort.",
+        "Through a partnership between New Economics for Women and PACE, the program used the city's General City Purposes funds to deliver direct financial assistance to independently owned businesses across eligible neighborhoods \u2014 including Lincoln Heights, Echo Park, Highland Park, Chinatown, Westlake, and Pico-Union \u2014 facing economic hardship, reduced foot traffic, public safety concerns, or displacement pressure. Eligible businesses held an active City of LA business license, had operated in the neighborhood for at least five years prior to December 1, 2020, and demonstrated financial hardship.",
+        "Represented the program in cross-team workflow planning, turning a one-time grant initiative into a repeatable process other programs at the center now reference."
+      ],
+      stats: ["37+ businesses funded", "Full lifecycle: design → distribution", "City Attorney's Office coordination"]
+    },
+    {
+      eyebrow: "Disaster Recovery",
+      title: "Warehouse Fire Business Recovery — Mayor's Office Briefing",
+      teaser: "Turned grassroots outreach after a local disaster into a briefing delivered to the Mayor of Los Angeles.",
+      body: [
+        "Following a major warehouse fire that disrupted dozens of local businesses, led outreach to affected owners to understand what they actually needed to recover — from masks and air purifiers to financial assistance.",
+        "Synthesized that outreach into a briefing package built for a senior audience: a one-page summary, a two-slide presentation, and a spoken briefing script, prepared for a round table presentation to the Mayor of Los Angeles on the business community's recovery needs.",
+        "The work moved a scattered set of individual business concerns into a single, credible ask that could be acted on at the city level."
+      ],
+      stats: ["Round table briefed to the Mayor's Office", "One-pager + deck + script produced"]
+    },
+    {
+      eyebrow: "Pipeline & Outreach Strategy",
+      title: "Access-to-Capital Outreach Campaign",
+      teaser: "Built a 550+ business prospect list into an actionable pipeline supporting an $875K lending goal.",
+      body: [
+        "Small business lending teams often have long prospect lists and no system to work them. This campaign turned a flat list of 550+ businesses into a prioritized, workable pipeline.",
+        "Built a prioritized call list ranked by readiness and fit, plus a lending funnel calculator so the team could see conversion at each stage and know where to focus outreach effort week to week.",
+        "Structured the outreach in sprints rather than an open-ended list, which kept the team's activity focused and measurable against the $875K lending goal it was built to support."
+      ],
+      stats: ["550+ prospects organized", "$875K lending goal supported", "Funnel calculator built from scratch"]
+    },
+    {
+      eyebrow: "Direct Client Work",
+      title: "Small Business Loan Packaging",
+      teaser: "Shepherding loan files through real complications, from collections accounts to missing lease documentation.",
+      body: [
+        "Loan packaging rarely goes cleanly, and the real work is in what happens when it doesn't. This is the day-to-day core of the role: taking a small business owner from first conversation to a lender-ready file.",
+        "Regularly works through complications — collections accounts, prior judgments, missing lease documentation — that would otherwise stall or sink a loan file, coordinating directly with clients to resolve or explain each issue before submission.",
+        "Coordinates warm referrals across a network of CDFI and bank partners to match each client with the lender most likely to say yes, rather than submitting the same file everywhere and hoping."
+      ],
+      stats: ["10+ lender network", "Schedule C & financial readiness reviews", "Complication resolution: collections, judgments, lease docs"]
+    }
+  ];
+
+  const caseList = document.getElementById('caseList');
+  CASES.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'case';
+    btn.innerHTML = `
+      <div class="case-title-wrap">
+        <div class="case-title">${c.title}</div>
+        <div class="case-teaser">${c.teaser}</div>
+      </div>
+      <div class="case-arrow">Read case study →</div>
+    `;
+    btn.addEventListener('click', () => openModal(i));
+    caseList.appendChild(btn);
+  });
+
+  const overlay = document.getElementById('modalOverlay');
+  const modalEyebrow = document.getElementById('modalEyebrow');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  let lastFocused = null;
+
+  function openModal(i){
+    const c = CASES[i];
+    modalEyebrow.textContent = c.eyebrow;
+    modalTitle.textContent = c.title;
+    modalBody.innerHTML = c.body.map(p => `<p>${p}</p>`).join('') +
+      `<div style="margin-top:18px;">${c.stats.map(s => `<span class="modal-stat">${s}</span>`).join('')}</div>`;
+    overlay.classList.add('open');
+    lastFocused = document.activeElement;
+    document.getElementById('modalClose').focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openFunnelModal(){
+    modalEyebrow.textContent = "Application Funnel & Eligibility Screening";
+    modalTitle.textContent = "Small Business Grant Program";
+    modalBody.innerHTML = `
+      <p>Every funded business in this program passed through a full screening funnel — from raw applications to a verified, eligible results table used to guide distribution.</p>
+
+      <div class="funnel">
+        <div class="funnel-section-label">Intake</div>
+        <div class="funnel-row"><div class="flabel">Total applications received</div><div class="fval">388</div></div>
+        <div class="funnel-row subtract"><div class="flabel">Duplicates removed</div><div class="fval">−8</div></div>
+        <div class="funnel-row total"><div class="flabel">Total unique applications</div><div class="fval">380</div></div>
+
+        <div class="funnel-section-label">Unique Applications by Language</div>
+        <div class="funnel-row"><div class="flabel">English</div><div class="fval">246</div></div>
+        <div class="funnel-row"><div class="flabel">Spanish</div><div class="fval">118</div></div>
+        <div class="funnel-row"><div class="flabel">Chinese</div><div class="fval">16</div></div>
+        <div class="funnel-row total"><div class="flabel">Total unique applications</div><div class="fval">380</div></div>
+
+        <div class="funnel-section-label">Merged / Scoring List</div>
+        <div class="funnel-row"><div class="flabel">Applications</div><div class="fval">380</div></div>
+        <div class="funnel-row"><div class="flabel">Application manually added</div><div class="fval">+1</div></div>
+        <div class="funnel-row total"><div class="flabel">Total applications scored</div><div class="fval">381</div></div>
+        <div class="funnel-row total"><div class="flabel">Met all 3 criteria <span class="fsub">Program eligibility · BTRC verified · operational before 12/1/2020</span></div><div class="fval">221</div></div>
+
+        <div class="funnel-section-label">Results Table</div>
+        <div class="funnel-row total"><div class="flabel">Total eligible applications</div><div class="fval">221</div></div>
+
+        <div class="funnel-section-label">By Partner Table</div>
+        <div class="funnel-row"><div class="flabel">NEW table</div><div class="fval">73</div></div>
+        <div class="funnel-row"><div class="flabel">PACE table</div><div class="fval">148</div></div>
+        <div class="funnel-row total"><div class="flabel">Total applications</div><div class="fval">221</div></div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <span class="modal-stat">388 → 380 unique → 221 eligible → 37+ funded</span>
+      </div>
+    `;
+    overlay.classList.add('open');
+    lastFocused = document.activeElement;
+    document.getElementById('modalClose').focus();
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('cd1LedgerRow').addEventListener('click', openFunnelModal);
+
+  function openFundingModal(){
+    modalEyebrow.textContent = "Loans & Grants \u00b7 Nov 2024 \u2013 Present";
+    modalTitle.textContent = "Total Capital Packaged for Clients";
+    modalBody.innerHTML = `
+      <p>Every dollar below moved through a full package — intake, documentation, and submission to a lender or grantor. "Packaged" is what was submitted; "Funded" is what clients actually received.</p>
+
+      <div class="funnel">
+        <div class="funnel-section-label">Loans (Conventional &amp; Non-Conventional)</div>
+        <div class="funnel-row"><div class="flabel">Records</div><div class="fval">7</div></div>
+        <div class="funnel-row"><div class="flabel">Amount packaged</div><div class="fval">$1,015,600</div></div>
+        <div class="funnel-row total"><div class="flabel">Amount funded</div><div class="fval">$991,100</div></div>
+
+        <div class="funnel-section-label">Grants</div>
+        <div class="funnel-row"><div class="flabel">Records</div><div class="fval">44</div></div>
+        <div class="funnel-row"><div class="flabel">Amount packaged</div><div class="fval">$298,170</div></div>
+        <div class="funnel-row total"><div class="flabel">Amount funded</div><div class="fval">$238,152</div></div>
+
+        <div class="funnel-section-label">Combined Total</div>
+        <div class="funnel-row"><div class="flabel">Total records</div><div class="fval">51</div></div>
+        <div class="funnel-row"><div class="flabel">Total amount packaged</div><div class="fval">$1,313,770</div></div>
+        <div class="funnel-row total"><div class="flabel">Total amount funded</div><div class="fval">$1,229,252</div></div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <span class="modal-stat">51 records · $1.23M funded · $1.31M packaged</span>
+      </div>
+    `;
+    overlay.classList.add('open');
+    lastFocused = document.activeElement;
+    document.getElementById('modalClose').focus();
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('fundingLedgerRow').addEventListener('click', openFundingModal);
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+</script>
+
+</body>
+</html>
